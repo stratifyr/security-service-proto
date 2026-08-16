@@ -1,6 +1,6 @@
 module github.com/stratifyr/security-service-proto
 
-go 1.26.6
+go 1.26.0
 
 require (
 	gofr.dev v1.59.0
