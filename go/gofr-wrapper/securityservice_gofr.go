@@ -33,6 +33,8 @@ type SecurityServiceServerWithGofr interface {
 	GetSecurities(*gofr.Context) (any, error)
 	UpdateSecurity(*gofr.Context) (any, error)
 	CreateOrUpdateSecurityStat(*gofr.Context) (any, error)
+	GetIndices(*gofr.Context) (any, error)
+	UpsertIndex(*gofr.Context) (any, error)
 	GetMarketDataJobs(*gofr.Context) (any, error)
 	UpdateMarketDataJob(*gofr.Context) (any, error)
 }
@@ -122,6 +124,38 @@ func (h *SecurityServiceServerWrapper) CreateOrUpdateSecurityStat(ctx context.Co
 	}
 
 	resp, ok := res.(*pb.CreateOrUpdateSecurityStatResponse)
+	if !ok {
+		return nil, status.Errorf(codes.Unknown, "unexpected response type %T", res)
+	}
+
+	return resp, nil
+}
+// Unary method handler for GetIndices
+func (h *SecurityServiceServerWrapper) GetIndices(ctx context.Context, req *pb.GetIndicesRequest) (*pb.GetIndicesResponse, error) {
+	gctx := h.getGofrContext(ctx, &GetIndicesRequestWrapper{ctx: ctx, GetIndicesRequest: req})
+
+	res, err := h.server.GetIndices(gctx)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, ok := res.(*pb.GetIndicesResponse)
+	if !ok {
+		return nil, status.Errorf(codes.Unknown, "unexpected response type %T", res)
+	}
+
+	return resp, nil
+}
+// Unary method handler for UpsertIndex
+func (h *SecurityServiceServerWrapper) UpsertIndex(ctx context.Context, req *pb.UpsertIndexRequest) (*pb.UpsertIndexResponse, error) {
+	gctx := h.getGofrContext(ctx, &UpsertIndexRequestWrapper{ctx: ctx, UpsertIndexRequest: req})
+
+	res, err := h.server.UpsertIndex(gctx)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, ok := res.(*pb.UpsertIndexResponse)
 	if !ok {
 		return nil, status.Errorf(codes.Unknown, "unexpected response type %T", res)
 	}

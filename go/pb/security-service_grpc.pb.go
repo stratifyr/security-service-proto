@@ -8,6 +8,7 @@ package pb
 
 import (
 	context "context"
+
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
@@ -27,6 +28,8 @@ type SecurityServiceClient interface {
 	GetSecurities(ctx context.Context, in *GetSecuritiesRequest, opts ...grpc.CallOption) (*GetSecuritiesResponse, error)
 	UpdateSecurity(ctx context.Context, in *UpdateSecurityRequest, opts ...grpc.CallOption) (*UpdateSecurityResponse, error)
 	CreateOrUpdateSecurityStat(ctx context.Context, in *CreateOrUpdateSecurityStatRequest, opts ...grpc.CallOption) (*CreateOrUpdateSecurityStatResponse, error)
+	GetIndices(ctx context.Context, in *GetIndicesRequest, opts ...grpc.CallOption) (*GetIndicesResponse, error)
+	UpsertIndex(ctx context.Context, in *UpsertIndexRequest, opts ...grpc.CallOption) (*UpsertIndexResponse, error)
 	GetMarketDataJobs(ctx context.Context, in *GetMarketDataJobsRequest, opts ...grpc.CallOption) (*GetMarketDataJobsResponse, error)
 	UpdateMarketDataJob(ctx context.Context, in *UpdateMarketDataJobRequest, opts ...grpc.CallOption) (*UpdateMarketDataJobResponse, error)
 }
@@ -84,6 +87,24 @@ func (c *securityServiceClient) CreateOrUpdateSecurityStat(ctx context.Context, 
 	return out, nil
 }
 
+func (c *securityServiceClient) GetIndices(ctx context.Context, in *GetIndicesRequest, opts ...grpc.CallOption) (*GetIndicesResponse, error) {
+	out := new(GetIndicesResponse)
+	err := c.cc.Invoke(ctx, "/security.SecurityService/GetIndices", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *securityServiceClient) UpsertIndex(ctx context.Context, in *UpsertIndexRequest, opts ...grpc.CallOption) (*UpsertIndexResponse, error) {
+	out := new(UpsertIndexResponse)
+	err := c.cc.Invoke(ctx, "/security.SecurityService/UpsertIndex", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *securityServiceClient) GetMarketDataJobs(ctx context.Context, in *GetMarketDataJobsRequest, opts ...grpc.CallOption) (*GetMarketDataJobsResponse, error) {
 	out := new(GetMarketDataJobsResponse)
 	err := c.cc.Invoke(ctx, "/security.SecurityService/GetMarketDataJobs", in, out, opts...)
@@ -111,6 +132,8 @@ type SecurityServiceServer interface {
 	GetSecurities(context.Context, *GetSecuritiesRequest) (*GetSecuritiesResponse, error)
 	UpdateSecurity(context.Context, *UpdateSecurityRequest) (*UpdateSecurityResponse, error)
 	CreateOrUpdateSecurityStat(context.Context, *CreateOrUpdateSecurityStatRequest) (*CreateOrUpdateSecurityStatResponse, error)
+	GetIndices(context.Context, *GetIndicesRequest) (*GetIndicesResponse, error)
+	UpsertIndex(context.Context, *UpsertIndexRequest) (*UpsertIndexResponse, error)
 	GetMarketDataJobs(context.Context, *GetMarketDataJobsRequest) (*GetMarketDataJobsResponse, error)
 	UpdateMarketDataJob(context.Context, *UpdateMarketDataJobRequest) (*UpdateMarketDataJobResponse, error)
 	mustEmbedUnimplementedSecurityServiceServer()
@@ -134,6 +157,12 @@ func (UnimplementedSecurityServiceServer) UpdateSecurity(context.Context, *Updat
 }
 func (UnimplementedSecurityServiceServer) CreateOrUpdateSecurityStat(context.Context, *CreateOrUpdateSecurityStatRequest) (*CreateOrUpdateSecurityStatResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateOrUpdateSecurityStat not implemented")
+}
+func (UnimplementedSecurityServiceServer) GetIndices(context.Context, *GetIndicesRequest) (*GetIndicesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetIndices not implemented")
+}
+func (UnimplementedSecurityServiceServer) UpsertIndex(context.Context, *UpsertIndexRequest) (*UpsertIndexResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpsertIndex not implemented")
 }
 func (UnimplementedSecurityServiceServer) GetMarketDataJobs(context.Context, *GetMarketDataJobsRequest) (*GetMarketDataJobsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetMarketDataJobs not implemented")
@@ -244,6 +273,42 @@ func _SecurityService_CreateOrUpdateSecurityStat_Handler(srv interface{}, ctx co
 	return interceptor(ctx, in, info, handler)
 }
 
+func _SecurityService_GetIndices_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetIndicesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SecurityServiceServer).GetIndices(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/security.SecurityService/GetIndices",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SecurityServiceServer).GetIndices(ctx, req.(*GetIndicesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SecurityService_UpsertIndex_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpsertIndexRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SecurityServiceServer).UpsertIndex(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/security.SecurityService/UpsertIndex",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SecurityServiceServer).UpsertIndex(ctx, req.(*UpsertIndexRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _SecurityService_GetMarketDataJobs_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetMarketDataJobsRequest)
 	if err := dec(in); err != nil {
@@ -306,6 +371,14 @@ var SecurityService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreateOrUpdateSecurityStat",
 			Handler:    _SecurityService_CreateOrUpdateSecurityStat_Handler,
+		},
+		{
+			MethodName: "GetIndices",
+			Handler:    _SecurityService_GetIndices_Handler,
+		},
+		{
+			MethodName: "UpsertIndex",
+			Handler:    _SecurityService_UpsertIndex_Handler,
 		},
 		{
 			MethodName: "GetMarketDataJobs",
