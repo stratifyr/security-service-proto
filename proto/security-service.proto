@@ -48,6 +48,8 @@ message UpdateSecurityRequest {
   string name = 4;
   string image = 5;
   double ltp = 6;
+  int64 volume = 7;
+  int64 free_float_shares = 8;
 }
 
 message UpdateSecurityResponse {
@@ -111,10 +113,12 @@ message Security {
   string name = 5;
   string image = 6;
   double ltp = 7;
-  double previous_close = 8;
-  string created_at = 9;
-  string updated_at = 10;
-  MarketData market_data = 11;
+  int64 volume = 8;
+  int64 free_float_shares = 9;
+  double previous_close = 10;
+  string created_at = 11;
+  string updated_at = 12;
+  MarketData market_data = 13;
 }
 
 message MarketData {
@@ -176,7 +180,9 @@ message IndexConstituent {
   string name = 7;
   string image = 8;
   double ltp = 9;
-  double previous_close = 10;
+  int64 volume = 10;
+  int64 free_float_shares = 11;
+  double previous_close = 12;
 }
 
 message MarketDataJob {
