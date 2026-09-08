@@ -46,6 +46,9 @@ func (s *SecurityServiceGoFrServer) GetIndices(ctx *gofr.Context) (any, error) {
 func (s *SecurityServiceGoFrServer) UpsertIndex(ctx *gofr.Context) (any, error) {
 	return &pb.UpsertIndexResponse{}, nil
 }
+func (s *SecurityServiceGoFrServer) UpsertIndexStat(ctx *gofr.Context) (any, error) {
+	return &pb.UpsertIndexStatResponse{}, nil
+}
 func (s *SecurityServiceGoFrServer) UpdateMarketDataJob(ctx *gofr.Context) (any, error) {
 	return &pb.UpdateMarketDataJobResponse{}, nil
 }

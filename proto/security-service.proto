@@ -12,6 +12,7 @@ service SecurityService {
   rpc CreateOrUpdateSecurityStat(CreateOrUpdateSecurityStatRequest) returns (CreateOrUpdateSecurityStatResponse);
   rpc GetIndices(GetIndicesRequest) returns (GetIndicesResponse);
   rpc UpsertIndex(UpsertIndexRequest) returns (UpsertIndexResponse);
+  rpc UpsertIndexStat(UpsertIndexStatRequest) returns (UpsertIndexStatResponse);
   rpc GetMarketDataJobs(GetMarketDataJobsRequest) returns (GetMarketDataJobsResponse);
   rpc UpdateMarketDataJob(UpdateMarketDataJobRequest) returns (UpdateMarketDataJobResponse);
 }
@@ -33,7 +34,7 @@ message GetMetricsResponse {
 }
 
 message GetSecuritiesRequest {
-  string date = 5;
+  string date = 1;
 }
 
 message GetSecuritiesResponse {
@@ -70,7 +71,9 @@ message CreateOrUpdateSecurityStatResponse {
   SecurityStat securityStat = 1;
 }
 
-message GetIndicesRequest {}
+message GetIndicesRequest {
+  string date = 1;
+}
 
 message GetIndicesResponse {
   repeated Index indices = 1;
@@ -79,11 +82,25 @@ message GetIndicesResponse {
 
 message UpsertIndexRequest {
   string name = 1;
-  repeated int32 securityIds = 2;
+  double value = 2;
+  repeated int32 securityIds = 3;
 }
 
 message UpsertIndexResponse {
   Index index = 1;
+}
+
+message UpsertIndexStatRequest {
+  int32 indexId = 1;
+  string date = 2;
+  double open = 3;
+  double close = 4;
+  double high = 5;
+  double low = 6;
+}
+
+message UpsertIndexStatResponse {
+  IndexStat indexStat = 1;
 }
 
 message GetMarketDataJobsRequest {
@@ -165,9 +182,20 @@ message SecurityStat {
 message Index {
   int32 id = 1;
   string name = 2;
-  string created_at = 3;
-  string updated_at = 4;
-  repeated IndexConstituent constituents = 5;
+  double value = 3;
+  double previous_close = 4;
+  string created_at = 5;
+  string updated_at = 6;
+  IndexMarketData market_data = 7;
+  repeated IndexConstituent constituents = 8;
+}
+
+message IndexMarketData {
+  string date = 1;
+  double open = 2;
+  double close = 3;
+  double high = 4;
+  double low = 5;
 }
 
 message IndexConstituent {
@@ -183,6 +211,18 @@ message IndexConstituent {
   int64 volume = 10;
   int64 free_float_shares = 11;
   double previous_close = 12;
+}
+
+message IndexStat {
+  int32 id = 1;
+  int32 indexId = 2;
+  string date = 3;
+  double open = 4;
+  double close = 5;
+  double high = 6;
+  double low = 7;
+  string created_at = 8;
+  string updated_at = 9;
 }
 
 message MarketDataJob {

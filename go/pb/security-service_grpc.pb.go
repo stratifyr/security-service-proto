@@ -8,7 +8,6 @@ package pb
 
 import (
 	context "context"
-
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
@@ -30,6 +29,7 @@ type SecurityServiceClient interface {
 	CreateOrUpdateSecurityStat(ctx context.Context, in *CreateOrUpdateSecurityStatRequest, opts ...grpc.CallOption) (*CreateOrUpdateSecurityStatResponse, error)
 	GetIndices(ctx context.Context, in *GetIndicesRequest, opts ...grpc.CallOption) (*GetIndicesResponse, error)
 	UpsertIndex(ctx context.Context, in *UpsertIndexRequest, opts ...grpc.CallOption) (*UpsertIndexResponse, error)
+	UpsertIndexStat(ctx context.Context, in *UpsertIndexStatRequest, opts ...grpc.CallOption) (*UpsertIndexStatResponse, error)
 	GetMarketDataJobs(ctx context.Context, in *GetMarketDataJobsRequest, opts ...grpc.CallOption) (*GetMarketDataJobsResponse, error)
 	UpdateMarketDataJob(ctx context.Context, in *UpdateMarketDataJobRequest, opts ...grpc.CallOption) (*UpdateMarketDataJobResponse, error)
 }
@@ -105,6 +105,15 @@ func (c *securityServiceClient) UpsertIndex(ctx context.Context, in *UpsertIndex
 	return out, nil
 }
 
+func (c *securityServiceClient) UpsertIndexStat(ctx context.Context, in *UpsertIndexStatRequest, opts ...grpc.CallOption) (*UpsertIndexStatResponse, error) {
+	out := new(UpsertIndexStatResponse)
+	err := c.cc.Invoke(ctx, "/security.SecurityService/UpsertIndexStat", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *securityServiceClient) GetMarketDataJobs(ctx context.Context, in *GetMarketDataJobsRequest, opts ...grpc.CallOption) (*GetMarketDataJobsResponse, error) {
 	out := new(GetMarketDataJobsResponse)
 	err := c.cc.Invoke(ctx, "/security.SecurityService/GetMarketDataJobs", in, out, opts...)
@@ -134,6 +143,7 @@ type SecurityServiceServer interface {
 	CreateOrUpdateSecurityStat(context.Context, *CreateOrUpdateSecurityStatRequest) (*CreateOrUpdateSecurityStatResponse, error)
 	GetIndices(context.Context, *GetIndicesRequest) (*GetIndicesResponse, error)
 	UpsertIndex(context.Context, *UpsertIndexRequest) (*UpsertIndexResponse, error)
+	UpsertIndexStat(context.Context, *UpsertIndexStatRequest) (*UpsertIndexStatResponse, error)
 	GetMarketDataJobs(context.Context, *GetMarketDataJobsRequest) (*GetMarketDataJobsResponse, error)
 	UpdateMarketDataJob(context.Context, *UpdateMarketDataJobRequest) (*UpdateMarketDataJobResponse, error)
 	mustEmbedUnimplementedSecurityServiceServer()
@@ -163,6 +173,9 @@ func (UnimplementedSecurityServiceServer) GetIndices(context.Context, *GetIndice
 }
 func (UnimplementedSecurityServiceServer) UpsertIndex(context.Context, *UpsertIndexRequest) (*UpsertIndexResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpsertIndex not implemented")
+}
+func (UnimplementedSecurityServiceServer) UpsertIndexStat(context.Context, *UpsertIndexStatRequest) (*UpsertIndexStatResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpsertIndexStat not implemented")
 }
 func (UnimplementedSecurityServiceServer) GetMarketDataJobs(context.Context, *GetMarketDataJobsRequest) (*GetMarketDataJobsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetMarketDataJobs not implemented")
@@ -309,6 +322,24 @@ func _SecurityService_UpsertIndex_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _SecurityService_UpsertIndexStat_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpsertIndexStatRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SecurityServiceServer).UpsertIndexStat(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/security.SecurityService/UpsertIndexStat",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SecurityServiceServer).UpsertIndexStat(ctx, req.(*UpsertIndexStatRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _SecurityService_GetMarketDataJobs_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetMarketDataJobsRequest)
 	if err := dec(in); err != nil {
@@ -379,6 +410,10 @@ var SecurityService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UpsertIndex",
 			Handler:    _SecurityService_UpsertIndex_Handler,
+		},
+		{
+			MethodName: "UpsertIndexStat",
+			Handler:    _SecurityService_UpsertIndexStat_Handler,
 		},
 		{
 			MethodName: "GetMarketDataJobs",
