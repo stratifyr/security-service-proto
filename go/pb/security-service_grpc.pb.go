@@ -25,8 +25,8 @@ type SecurityServiceClient interface {
 	GetMarketDays(ctx context.Context, in *GetMarketDaysRequest, opts ...grpc.CallOption) (*GetMarketDaysResponse, error)
 	GetMetrics(ctx context.Context, in *GetMetricsRequest, opts ...grpc.CallOption) (*GetMetricsResponse, error)
 	GetSecurities(ctx context.Context, in *GetSecuritiesRequest, opts ...grpc.CallOption) (*GetSecuritiesResponse, error)
-	UpdateSecurity(ctx context.Context, in *UpdateSecurityRequest, opts ...grpc.CallOption) (*UpdateSecurityResponse, error)
-	CreateOrUpdateSecurityStat(ctx context.Context, in *CreateOrUpdateSecurityStatRequest, opts ...grpc.CallOption) (*CreateOrUpdateSecurityStatResponse, error)
+	UpsertSecurity(ctx context.Context, in *UpsertSecurityRequest, opts ...grpc.CallOption) (*UpsertSecurityResponse, error)
+	UpsertSecurityStat(ctx context.Context, in *UpsertSecurityStatRequest, opts ...grpc.CallOption) (*UpsertSecurityStatResponse, error)
 	GetIndices(ctx context.Context, in *GetIndicesRequest, opts ...grpc.CallOption) (*GetIndicesResponse, error)
 	UpsertIndex(ctx context.Context, in *UpsertIndexRequest, opts ...grpc.CallOption) (*UpsertIndexResponse, error)
 	UpsertIndexStat(ctx context.Context, in *UpsertIndexStatRequest, opts ...grpc.CallOption) (*UpsertIndexStatResponse, error)
@@ -69,18 +69,18 @@ func (c *securityServiceClient) GetSecurities(ctx context.Context, in *GetSecuri
 	return out, nil
 }
 
-func (c *securityServiceClient) UpdateSecurity(ctx context.Context, in *UpdateSecurityRequest, opts ...grpc.CallOption) (*UpdateSecurityResponse, error) {
-	out := new(UpdateSecurityResponse)
-	err := c.cc.Invoke(ctx, "/security.SecurityService/UpdateSecurity", in, out, opts...)
+func (c *securityServiceClient) UpsertSecurity(ctx context.Context, in *UpsertSecurityRequest, opts ...grpc.CallOption) (*UpsertSecurityResponse, error) {
+	out := new(UpsertSecurityResponse)
+	err := c.cc.Invoke(ctx, "/security.SecurityService/UpsertSecurity", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *securityServiceClient) CreateOrUpdateSecurityStat(ctx context.Context, in *CreateOrUpdateSecurityStatRequest, opts ...grpc.CallOption) (*CreateOrUpdateSecurityStatResponse, error) {
-	out := new(CreateOrUpdateSecurityStatResponse)
-	err := c.cc.Invoke(ctx, "/security.SecurityService/CreateOrUpdateSecurityStat", in, out, opts...)
+func (c *securityServiceClient) UpsertSecurityStat(ctx context.Context, in *UpsertSecurityStatRequest, opts ...grpc.CallOption) (*UpsertSecurityStatResponse, error) {
+	out := new(UpsertSecurityStatResponse)
+	err := c.cc.Invoke(ctx, "/security.SecurityService/UpsertSecurityStat", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -139,8 +139,8 @@ type SecurityServiceServer interface {
 	GetMarketDays(context.Context, *GetMarketDaysRequest) (*GetMarketDaysResponse, error)
 	GetMetrics(context.Context, *GetMetricsRequest) (*GetMetricsResponse, error)
 	GetSecurities(context.Context, *GetSecuritiesRequest) (*GetSecuritiesResponse, error)
-	UpdateSecurity(context.Context, *UpdateSecurityRequest) (*UpdateSecurityResponse, error)
-	CreateOrUpdateSecurityStat(context.Context, *CreateOrUpdateSecurityStatRequest) (*CreateOrUpdateSecurityStatResponse, error)
+	UpsertSecurity(context.Context, *UpsertSecurityRequest) (*UpsertSecurityResponse, error)
+	UpsertSecurityStat(context.Context, *UpsertSecurityStatRequest) (*UpsertSecurityStatResponse, error)
 	GetIndices(context.Context, *GetIndicesRequest) (*GetIndicesResponse, error)
 	UpsertIndex(context.Context, *UpsertIndexRequest) (*UpsertIndexResponse, error)
 	UpsertIndexStat(context.Context, *UpsertIndexStatRequest) (*UpsertIndexStatResponse, error)
@@ -162,11 +162,11 @@ func (UnimplementedSecurityServiceServer) GetMetrics(context.Context, *GetMetric
 func (UnimplementedSecurityServiceServer) GetSecurities(context.Context, *GetSecuritiesRequest) (*GetSecuritiesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetSecurities not implemented")
 }
-func (UnimplementedSecurityServiceServer) UpdateSecurity(context.Context, *UpdateSecurityRequest) (*UpdateSecurityResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UpdateSecurity not implemented")
+func (UnimplementedSecurityServiceServer) UpsertSecurity(context.Context, *UpsertSecurityRequest) (*UpsertSecurityResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpsertSecurity not implemented")
 }
-func (UnimplementedSecurityServiceServer) CreateOrUpdateSecurityStat(context.Context, *CreateOrUpdateSecurityStatRequest) (*CreateOrUpdateSecurityStatResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreateOrUpdateSecurityStat not implemented")
+func (UnimplementedSecurityServiceServer) UpsertSecurityStat(context.Context, *UpsertSecurityStatRequest) (*UpsertSecurityStatResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpsertSecurityStat not implemented")
 }
 func (UnimplementedSecurityServiceServer) GetIndices(context.Context, *GetIndicesRequest) (*GetIndicesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetIndices not implemented")
@@ -250,38 +250,38 @@ func _SecurityService_GetSecurities_Handler(srv interface{}, ctx context.Context
 	return interceptor(ctx, in, info, handler)
 }
 
-func _SecurityService_UpdateSecurity_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UpdateSecurityRequest)
+func _SecurityService_UpsertSecurity_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpsertSecurityRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(SecurityServiceServer).UpdateSecurity(ctx, in)
+		return srv.(SecurityServiceServer).UpsertSecurity(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/security.SecurityService/UpdateSecurity",
+		FullMethod: "/security.SecurityService/UpsertSecurity",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SecurityServiceServer).UpdateSecurity(ctx, req.(*UpdateSecurityRequest))
+		return srv.(SecurityServiceServer).UpsertSecurity(ctx, req.(*UpsertSecurityRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _SecurityService_CreateOrUpdateSecurityStat_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CreateOrUpdateSecurityStatRequest)
+func _SecurityService_UpsertSecurityStat_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpsertSecurityStatRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(SecurityServiceServer).CreateOrUpdateSecurityStat(ctx, in)
+		return srv.(SecurityServiceServer).UpsertSecurityStat(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/security.SecurityService/CreateOrUpdateSecurityStat",
+		FullMethod: "/security.SecurityService/UpsertSecurityStat",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SecurityServiceServer).CreateOrUpdateSecurityStat(ctx, req.(*CreateOrUpdateSecurityStatRequest))
+		return srv.(SecurityServiceServer).UpsertSecurityStat(ctx, req.(*UpsertSecurityStatRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -396,12 +396,12 @@ var SecurityService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _SecurityService_GetSecurities_Handler,
 		},
 		{
-			MethodName: "UpdateSecurity",
-			Handler:    _SecurityService_UpdateSecurity_Handler,
+			MethodName: "UpsertSecurity",
+			Handler:    _SecurityService_UpsertSecurity_Handler,
 		},
 		{
-			MethodName: "CreateOrUpdateSecurityStat",
-			Handler:    _SecurityService_CreateOrUpdateSecurityStat_Handler,
+			MethodName: "UpsertSecurityStat",
+			Handler:    _SecurityService_UpsertSecurityStat_Handler,
 		},
 		{
 			MethodName: "GetIndices",

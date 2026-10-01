@@ -31,8 +31,8 @@ type SecurityServiceServerWithGofr interface {
 	GetMarketDays(*gofr.Context) (any, error)
 	GetMetrics(*gofr.Context) (any, error)
 	GetSecurities(*gofr.Context) (any, error)
-	UpdateSecurity(*gofr.Context) (any, error)
-	CreateOrUpdateSecurityStat(*gofr.Context) (any, error)
+	UpsertSecurity(*gofr.Context) (any, error)
+	UpsertSecurityStat(*gofr.Context) (any, error)
 	GetIndices(*gofr.Context) (any, error)
 	UpsertIndex(*gofr.Context) (any, error)
 	UpsertIndexStat(*gofr.Context) (any, error)
@@ -99,32 +99,34 @@ func (h *SecurityServiceServerWrapper) GetSecurities(ctx context.Context, req *p
 	
 	return resp, nil
 }
-// Unary method handler for UpdateSecurity
-func (h *SecurityServiceServerWrapper) UpdateSecurity(ctx context.Context, req *pb.UpdateSecurityRequest) (*pb.UpdateSecurityResponse, error) {
-	gctx := h.getGofrContext(ctx, &UpdateSecurityRequestWrapper{ctx: ctx, UpdateSecurityRequest: req})
 
-	res, err := h.server.UpdateSecurity(gctx)
+// Unary method handler for UpsertSecurity
+func (h *SecurityServiceServerWrapper) UpsertSecurity(ctx context.Context, req *pb.UpsertSecurityRequest) (*pb.UpsertSecurityResponse, error) {
+	gctx := h.getGofrContext(ctx, &UpsertSecurityRequestWrapper{ctx: ctx, UpsertSecurityRequest: req})
+
+	res, err := h.server.UpsertSecurity(gctx)
 	if err != nil {
 		return nil, err
 	}
 
-	resp, ok := res.(*pb.UpdateSecurityResponse)
+	resp, ok := res.(*pb.UpsertSecurityResponse)
 	if !ok {
 		return nil, status.Errorf(codes.Unknown, "unexpected response type %T", res)
 	}
 
 	return resp, nil
 }
-// Unary method handler for CreateOrUpdateSecurityStat
-func (h *SecurityServiceServerWrapper) CreateOrUpdateSecurityStat(ctx context.Context, req *pb.CreateOrUpdateSecurityStatRequest) (*pb.CreateOrUpdateSecurityStatResponse, error) {
-	gctx := h.getGofrContext(ctx, &CreateOrUpdateSecurityStatRequestWrapper{ctx: ctx, CreateOrUpdateSecurityStatRequest: req})
 
-	res, err := h.server.CreateOrUpdateSecurityStat(gctx)
+// Unary method handler for UpsertSecurityStat
+func (h *SecurityServiceServerWrapper) UpsertSecurityStat(ctx context.Context, req *pb.UpsertSecurityStatRequest) (*pb.UpsertSecurityStatResponse, error) {
+	gctx := h.getGofrContext(ctx, &UpsertSecurityStatRequestWrapper{ctx: ctx, UpsertSecurityStatRequest: req})
+
+	res, err := h.server.UpsertSecurityStat(gctx)
 	if err != nil {
 		return nil, err
 	}
 
-	resp, ok := res.(*pb.CreateOrUpdateSecurityStatResponse)
+	resp, ok := res.(*pb.UpsertSecurityStatResponse)
 	if !ok {
 		return nil, status.Errorf(codes.Unknown, "unexpected response type %T", res)
 	}

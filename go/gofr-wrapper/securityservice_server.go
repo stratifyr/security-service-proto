@@ -31,11 +31,11 @@ func (s *SecurityServiceGoFrServer) GetMetrics(ctx *gofr.Context) (any, error) {
 func (s *SecurityServiceGoFrServer) GetSecurities(ctx *gofr.Context) (any, error) {
 	return &pb.GetSecuritiesResponse{}, nil
 }
-func (s *SecurityServiceGoFrServer) UpdateSecurity(ctx *gofr.Context) (any, error) {
-	return &pb.UpdateSecurityResponse{}, nil
+func (s *SecurityServiceGoFrServer) UpsertSecurity(ctx *gofr.Context) (any, error) {
+	return &pb.UpsertSecurityResponse{}, nil
 }
-func (s *SecurityServiceGoFrServer) CreateOrUpdateSecurityStat(ctx *gofr.Context) (any, error) {
-	return &pb.CreateOrUpdateSecurityStatResponse{}, nil
+func (s *SecurityServiceGoFrServer) UpsertSecurityStat(ctx *gofr.Context) (any, error) {
+	return &pb.UpsertSecurityStatRequest{}, nil
 }
 func (s *SecurityServiceGoFrServer) GetMarketDataJobs(ctx *gofr.Context) (any, error) {
 	return &pb.GetMarketDataJobsResponse{}, nil

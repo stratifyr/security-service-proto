@@ -159,30 +159,30 @@ func (h *GetSecuritiesRequestWrapper) Params(s string) []string {
 	return nil
 }
 
-type UpdateSecurityRequestWrapper struct {
+type UpsertSecurityRequestWrapper struct {
 	ctx context.Context
-	*pb.UpdateSecurityRequest
+	*pb.UpsertSecurityRequest
 }
 
-func (h *UpdateSecurityRequestWrapper) Context() context.Context {
+func (h *UpsertSecurityRequestWrapper) Context() context.Context {
 	return h.ctx
 }
 
-func (h *UpdateSecurityRequestWrapper) Param(s string) string {
+func (h *UpsertSecurityRequestWrapper) Param(s string) string {
 	return ""
 }
 
-func (h *UpdateSecurityRequestWrapper) PathParam(s string) string {
+func (h *UpsertSecurityRequestWrapper) PathParam(s string) string {
 	return ""
 }
 
-func (h *UpdateSecurityRequestWrapper) Bind(p interface{}) error {
+func (h *UpsertSecurityRequestWrapper) Bind(p interface{}) error {
 	ptr := reflect.ValueOf(p)
 	if ptr.Kind() != reflect.Ptr {
 		return fmt.Errorf("expected a pointer, got %T", p)
 	}
 
-	hValue := reflect.ValueOf(h.UpdateSecurityRequest).Elem()
+	hValue := reflect.ValueOf(h.UpsertSecurityRequest).Elem()
 	ptrValue := ptr.Elem()
 
 	for i := 0; i < hValue.NumField(); i++ {
@@ -199,38 +199,38 @@ func (h *UpdateSecurityRequestWrapper) Bind(p interface{}) error {
 	return nil
 }
 
-func (h *UpdateSecurityRequestWrapper) HostName() string {
+func (h *UpsertSecurityRequestWrapper) HostName() string {
 	return ""
 }
 
-func (h *UpdateSecurityRequestWrapper) Params(s string) []string {
+func (h *UpsertSecurityRequestWrapper) Params(s string) []string {
 	return nil
 }
 
-type CreateOrUpdateSecurityStatRequestWrapper struct {
+type UpsertSecurityStatRequestWrapper struct {
 	ctx context.Context
-	*pb.CreateOrUpdateSecurityStatRequest
+	*pb.UpsertSecurityStatRequest
 }
 
-func (h *CreateOrUpdateSecurityStatRequestWrapper) Context() context.Context {
+func (h *UpsertSecurityStatRequestWrapper) Context() context.Context {
 	return h.ctx
 }
 
-func (h *CreateOrUpdateSecurityStatRequestWrapper) Param(s string) string {
+func (h *UpsertSecurityStatRequestWrapper) Param(s string) string {
 	return ""
 }
 
-func (h *CreateOrUpdateSecurityStatRequestWrapper) PathParam(s string) string {
+func (h *UpsertSecurityStatRequestWrapper) PathParam(s string) string {
 	return ""
 }
 
-func (h *CreateOrUpdateSecurityStatRequestWrapper) Bind(p interface{}) error {
+func (h *UpsertSecurityStatRequestWrapper) Bind(p interface{}) error {
 	ptr := reflect.ValueOf(p)
 	if ptr.Kind() != reflect.Ptr {
 		return fmt.Errorf("expected a pointer, got %T", p)
 	}
 
-	hValue := reflect.ValueOf(h.CreateOrUpdateSecurityStatRequest).Elem()
+	hValue := reflect.ValueOf(h.UpsertSecurityStatRequest).Elem()
 	ptrValue := ptr.Elem()
 
 	for i := 0; i < hValue.NumField(); i++ {
@@ -247,11 +247,11 @@ func (h *CreateOrUpdateSecurityStatRequestWrapper) Bind(p interface{}) error {
 	return nil
 }
 
-func (h *CreateOrUpdateSecurityStatRequestWrapper) HostName() string {
+func (h *UpsertSecurityStatRequestWrapper) HostName() string {
 	return ""
 }
 
-func (h *CreateOrUpdateSecurityStatRequestWrapper) Params(s string) []string {
+func (h *UpsertSecurityStatRequestWrapper) Params(s string) []string {
 	return nil
 }
 

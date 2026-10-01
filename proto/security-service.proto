@@ -8,8 +8,8 @@ service SecurityService {
   rpc GetMarketDays(GetMarketDaysRequest) returns (GetMarketDaysResponse);
   rpc GetMetrics(GetMetricsRequest) returns (GetMetricsResponse);
   rpc GetSecurities(GetSecuritiesRequest) returns (GetSecuritiesResponse);
-  rpc UpdateSecurity(UpdateSecurityRequest) returns (UpdateSecurityResponse);
-  rpc CreateOrUpdateSecurityStat(CreateOrUpdateSecurityStatRequest) returns (CreateOrUpdateSecurityStatResponse);
+  rpc UpsertSecurity(UpsertSecurityRequest) returns (UpsertSecurityResponse);
+  rpc UpsertSecurityStat(UpsertSecurityStatRequest) returns (UpsertSecurityStatResponse);
   rpc GetIndices(GetIndicesRequest) returns (GetIndicesResponse);
   rpc UpsertIndex(UpsertIndexRequest) returns (UpsertIndexResponse);
   rpc UpsertIndexStat(UpsertIndexStatRequest) returns (UpsertIndexStatResponse);
@@ -42,8 +42,8 @@ message GetSecuritiesResponse {
   int32 total = 2;
 }
 
-message UpdateSecurityRequest {
-  int32 id = 1;
+message UpsertSecurityRequest {
+  string isin = 1;
   string symbol = 2;
   string industry = 3;
   string name = 4;
@@ -53,11 +53,11 @@ message UpdateSecurityRequest {
   int64 free_float_shares = 8;
 }
 
-message UpdateSecurityResponse {
+message UpsertSecurityResponse {
   Security security = 1;
 }
 
-message CreateOrUpdateSecurityStatRequest {
+message UpsertSecurityStatRequest {
   int32 securityId = 1;
   string date = 2;
   double open = 3;
@@ -67,7 +67,7 @@ message CreateOrUpdateSecurityStatRequest {
   int32 volume = 7;
 }
 
-message CreateOrUpdateSecurityStatResponse {
+message UpsertSecurityStatResponse {
   SecurityStat securityStat = 1;
 }
 
