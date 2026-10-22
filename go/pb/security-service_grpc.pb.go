@@ -25,6 +25,7 @@ type SecurityServiceClient interface {
 	GetMarketDays(ctx context.Context, in *GetMarketDaysRequest, opts ...grpc.CallOption) (*GetMarketDaysResponse, error)
 	GetMetrics(ctx context.Context, in *GetMetricsRequest, opts ...grpc.CallOption) (*GetMetricsResponse, error)
 	GetSecurities(ctx context.Context, in *GetSecuritiesRequest, opts ...grpc.CallOption) (*GetSecuritiesResponse, error)
+	GetHistoricalData(ctx context.Context, in *GetHistoricalDataRequest, opts ...grpc.CallOption) (*GetHistoricalDataResponse, error)
 	UpsertSecurity(ctx context.Context, in *UpsertSecurityRequest, opts ...grpc.CallOption) (*UpsertSecurityResponse, error)
 	UpsertSecurityStat(ctx context.Context, in *UpsertSecurityStatRequest, opts ...grpc.CallOption) (*UpsertSecurityStatResponse, error)
 	GetIndices(ctx context.Context, in *GetIndicesRequest, opts ...grpc.CallOption) (*GetIndicesResponse, error)
@@ -63,6 +64,15 @@ func (c *securityServiceClient) GetMetrics(ctx context.Context, in *GetMetricsRe
 func (c *securityServiceClient) GetSecurities(ctx context.Context, in *GetSecuritiesRequest, opts ...grpc.CallOption) (*GetSecuritiesResponse, error) {
 	out := new(GetSecuritiesResponse)
 	err := c.cc.Invoke(ctx, "/security.SecurityService/GetSecurities", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *securityServiceClient) GetHistoricalData(ctx context.Context, in *GetHistoricalDataRequest, opts ...grpc.CallOption) (*GetHistoricalDataResponse, error) {
+	out := new(GetHistoricalDataResponse)
+	err := c.cc.Invoke(ctx, "/security.SecurityService/GetHistoricalData", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -139,6 +149,7 @@ type SecurityServiceServer interface {
 	GetMarketDays(context.Context, *GetMarketDaysRequest) (*GetMarketDaysResponse, error)
 	GetMetrics(context.Context, *GetMetricsRequest) (*GetMetricsResponse, error)
 	GetSecurities(context.Context, *GetSecuritiesRequest) (*GetSecuritiesResponse, error)
+	GetHistoricalData(context.Context, *GetHistoricalDataRequest) (*GetHistoricalDataResponse, error)
 	UpsertSecurity(context.Context, *UpsertSecurityRequest) (*UpsertSecurityResponse, error)
 	UpsertSecurityStat(context.Context, *UpsertSecurityStatRequest) (*UpsertSecurityStatResponse, error)
 	GetIndices(context.Context, *GetIndicesRequest) (*GetIndicesResponse, error)
@@ -161,6 +172,9 @@ func (UnimplementedSecurityServiceServer) GetMetrics(context.Context, *GetMetric
 }
 func (UnimplementedSecurityServiceServer) GetSecurities(context.Context, *GetSecuritiesRequest) (*GetSecuritiesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetSecurities not implemented")
+}
+func (UnimplementedSecurityServiceServer) GetHistoricalData(context.Context, *GetHistoricalDataRequest) (*GetHistoricalDataResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetHistoricalData not implemented")
 }
 func (UnimplementedSecurityServiceServer) UpsertSecurity(context.Context, *UpsertSecurityRequest) (*UpsertSecurityResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpsertSecurity not implemented")
@@ -246,6 +260,24 @@ func _SecurityService_GetSecurities_Handler(srv interface{}, ctx context.Context
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(SecurityServiceServer).GetSecurities(ctx, req.(*GetSecuritiesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SecurityService_GetHistoricalData_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetHistoricalDataRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SecurityServiceServer).GetHistoricalData(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/security.SecurityService/GetHistoricalData",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SecurityServiceServer).GetHistoricalData(ctx, req.(*GetHistoricalDataRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -394,6 +426,10 @@ var SecurityService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetSecurities",
 			Handler:    _SecurityService_GetSecurities_Handler,
+		},
+		{
+			MethodName: "GetHistoricalData",
+			Handler:    _SecurityService_GetHistoricalData_Handler,
 		},
 		{
 			MethodName: "UpsertSecurity",

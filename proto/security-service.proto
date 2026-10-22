@@ -8,6 +8,7 @@ service SecurityService {
   rpc GetMarketDays(GetMarketDaysRequest) returns (GetMarketDaysResponse);
   rpc GetMetrics(GetMetricsRequest) returns (GetMetricsResponse);
   rpc GetSecurities(GetSecuritiesRequest) returns (GetSecuritiesResponse);
+  rpc GetHistoricalData(GetHistoricalDataRequest) returns (GetHistoricalDataResponse);
   rpc UpsertSecurity(UpsertSecurityRequest) returns (UpsertSecurityResponse);
   rpc UpsertSecurityStat(UpsertSecurityStatRequest) returns (UpsertSecurityStatResponse);
   rpc GetIndices(GetIndicesRequest) returns (GetIndicesResponse);
@@ -33,12 +34,19 @@ message GetMetricsResponse {
   int32 total = 2;
 }
 
-message GetSecuritiesRequest {
-  string date = 1;
-}
+message GetSecuritiesRequest {}
 
 message GetSecuritiesResponse {
   repeated Security securities = 1;
+  int32 total = 2;
+}
+
+message GetHistoricalDataRequest {
+  int32 security_id = 1;
+}
+
+message GetHistoricalDataResponse {
+  repeated MarketData market_data = 1;
   int32 total = 2;
 }
 

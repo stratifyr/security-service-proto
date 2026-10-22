@@ -31,6 +31,9 @@ func (s *SecurityServiceGoFrServer) GetMetrics(ctx *gofr.Context) (any, error) {
 func (s *SecurityServiceGoFrServer) GetSecurities(ctx *gofr.Context) (any, error) {
 	return &pb.GetSecuritiesResponse{}, nil
 }
+func (s *SecurityServiceGoFrServer) GetHistoricalData(ctx *gofr.Context) (any, error) {
+	return &pb.GetHistoricalDataResponse{}, nil
+}
 func (s *SecurityServiceGoFrServer) UpsertSecurity(ctx *gofr.Context) (any, error) {
 	return &pb.UpsertSecurityResponse{}, nil
 }

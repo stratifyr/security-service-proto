@@ -31,6 +31,7 @@ type SecurityServiceServerWithGofr interface {
 	GetMarketDays(*gofr.Context) (any, error)
 	GetMetrics(*gofr.Context) (any, error)
 	GetSecurities(*gofr.Context) (any, error)
+	GetHistoricalData(*gofr.Context) (any, error)
 	UpsertSecurity(*gofr.Context) (any, error)
 	UpsertSecurityStat(*gofr.Context) (any, error)
 	GetIndices(*gofr.Context) (any, error)
@@ -99,7 +100,22 @@ func (h *SecurityServiceServerWrapper) GetSecurities(ctx context.Context, req *p
 	
 	return resp, nil
 }
+// Unary method handler for GetHistoricalData
+func (h *SecurityServiceServerWrapper) GetHistoricalData(ctx context.Context, req *pb.GetHistoricalDataRequest) (*pb.GetHistoricalDataResponse, error) {
+	gctx := h.getGofrContext(ctx, &GetHistoricalDataRequestWrapper{ctx: ctx, GetHistoricalDataRequest: req})
 
+	res, err := h.server.GetHistoricalData(gctx)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, ok := res.(*pb.GetHistoricalDataResponse)
+	if !ok {
+		return nil, status.Errorf(codes.Unknown, "unexpected response type %T", res)
+	}
+
+	return resp, nil
+}
 // Unary method handler for UpsertSecurity
 func (h *SecurityServiceServerWrapper) UpsertSecurity(ctx context.Context, req *pb.UpsertSecurityRequest) (*pb.UpsertSecurityResponse, error) {
 	gctx := h.getGofrContext(ctx, &UpsertSecurityRequestWrapper{ctx: ctx, UpsertSecurityRequest: req})

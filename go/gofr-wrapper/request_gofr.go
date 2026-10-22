@@ -159,6 +159,54 @@ func (h *GetSecuritiesRequestWrapper) Params(s string) []string {
 	return nil
 }
 
+type GetHistoricalDataRequestWrapper struct {
+	ctx context.Context
+	*pb.GetHistoricalDataRequest
+}
+
+func (h *GetHistoricalDataRequestWrapper) Context() context.Context {
+	return h.ctx
+}
+
+func (h *GetHistoricalDataRequestWrapper) Param(s string) string {
+	return ""
+}
+
+func (h *GetHistoricalDataRequestWrapper) PathParam(s string) string {
+	return ""
+}
+
+func (h *GetHistoricalDataRequestWrapper) Bind(p interface{}) error {
+	ptr := reflect.ValueOf(p)
+	if ptr.Kind() != reflect.Ptr {
+		return fmt.Errorf("expected a pointer, got %T", p)
+	}
+
+	hValue := reflect.ValueOf(h.GetHistoricalDataRequest).Elem()
+	ptrValue := ptr.Elem()
+
+	for i := 0; i < hValue.NumField(); i++ {
+		field := hValue.Type().Field(i)
+		if field.Name == "state" || field.Name == "sizeCache" || field.Name == "unknownFields" {
+			continue
+		}
+
+		if field.IsExported() {
+			ptrValue.Field(i).Set(hValue.Field(i))
+		}
+	}
+
+	return nil
+}
+
+func (h *GetHistoricalDataRequestWrapper) HostName() string {
+	return ""
+}
+
+func (h *GetHistoricalDataRequestWrapper) Params(s string) []string {
+	return nil
+}
+
 type UpsertSecurityRequestWrapper struct {
 	ctx context.Context
 	*pb.UpsertSecurityRequest
