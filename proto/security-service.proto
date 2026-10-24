@@ -158,12 +158,8 @@ message MarketData {
 
 message SecurityMetric {
   int32 id = 1;
-  string name = 2;
-  string type = 3;
-  int32 period = 4;
-  string indicator = 5;
-  double value = 6;
-  double normalized_value = 7;
+  double value = 2;
+  double normalized_value = 3;
 }
 
 message Metric {
