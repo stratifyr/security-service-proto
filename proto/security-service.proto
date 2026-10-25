@@ -66,7 +66,7 @@ message UpsertSecurityResponse {
 }
 
 message UpsertSecurityStatRequest {
-  int32 securityId = 1;
+  int32 security_id = 1;
   string date = 2;
   double open = 3;
   double close = 4;
@@ -76,12 +76,10 @@ message UpsertSecurityStatRequest {
 }
 
 message UpsertSecurityStatResponse {
-  SecurityStat securityStat = 1;
+  SecurityStat security_stat = 1;
 }
 
-message GetIndicesRequest {
-  string date = 1;
-}
+message GetIndicesRequest {}
 
 message GetIndicesResponse {
   repeated Index indices = 1;
@@ -91,7 +89,7 @@ message GetIndicesResponse {
 message UpsertIndexRequest {
   string name = 1;
   double value = 2;
-  repeated int32 securityIds = 3;
+  repeated int32 security_ids = 3;
 }
 
 message UpsertIndexResponse {
@@ -99,7 +97,7 @@ message UpsertIndexResponse {
 }
 
 message UpsertIndexStatRequest {
-  int32 indexId = 1;
+  int32 index_id = 1;
   string date = 2;
   double open = 3;
   double close = 4;
@@ -108,7 +106,7 @@ message UpsertIndexStatRequest {
 }
 
 message UpsertIndexStatResponse {
-  IndexStat indexStat = 1;
+  IndexStat index_stat = 1;
 }
 
 message GetMarketDataJobsRequest {
@@ -116,7 +114,7 @@ message GetMarketDataJobsRequest {
 }
 
 message GetMarketDataJobsResponse {
-  repeated MarketDataJob marketDataJobs = 1;
+  repeated MarketDataJob market_data_jobs = 1;
   int32 total = 2;
 }
 
@@ -127,7 +125,7 @@ message UpdateMarketDataJobRequest {
 }
 
 message UpdateMarketDataJobResponse {
-  MarketDataJob marketDataJob = 1;
+  MarketDataJob market_data_job = 1;
 }
 
 message Security {
@@ -172,7 +170,7 @@ message Metric {
 
 message SecurityStat {
   int32 id = 1;
-  int32 securityId = 2;
+  int32 security_id = 2;
   string date = 3;
   double open = 4;
   double close = 5;
